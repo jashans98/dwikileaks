@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect'
 import Web3 from 'web3'
 
 import ErrorMessage from '../error/Error'
+import Spinner from '../spinner/Spinner'
 
 // SELECTORS
 import { selectSubmitStatus } from './SubmitSelectors'
@@ -45,7 +46,7 @@ class SubmitContainer extends Component {
   render() {
     const { web3Status } = this.props
 
-    if (!web3Status.checked) return <div>loading</div>
+    if (!web3Status.checked) return <Spinner />
 
     return (
       <div className="SubmitContainer">
