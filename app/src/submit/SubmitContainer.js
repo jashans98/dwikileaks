@@ -13,21 +13,26 @@ import { web3Initialized, web3NoExist } from '../util/web3/web3Actions'
 
 class SubmitContainer extends Component {
   componentDidMount() {
-    const { web3Initialized, web3NoExist } = this.props
+    // Wait for loading completion to avoid race conditions with web3 injection timing.
 
-    // Check for MetaMask
-    if (typeof window.web3 !== 'undefined') {
-      const w = new Web3(window.web3.currentProvider)
+    // as per
+    window.addEventListener('load', () => {
+      const { web3Initialized, web3NoExist } = this.props
 
-      console.log('web3 provider found');
+      // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+      if (typeof window.web3 !== 'undefined') {
+        // Set to window object for now
+        window.w = new Web3(window.web3.currentProvider)
 
-      web3Initialized(w)
-    } else {
-      console.log('web3 provider not found');
-      // no metamask? flag for now
-      web3NoExist()
+        console.log('Injected web3 detected.')
+        web3Initialized()
+      } else {
+        console.log('web3 provider not found')
+        // no metamask? flag for now
+        web3NoExist()
+      }
+      })
     }
-  }
 
   render() {
     const { submitDocument } = this.props

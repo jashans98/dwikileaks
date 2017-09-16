@@ -5,7 +5,6 @@ import {
 
 const web3Initialized = results => ({
   type: WEB3_INITIALIZED,
-  payload: results,
 })
 
 const web3NoExist = results => ({
