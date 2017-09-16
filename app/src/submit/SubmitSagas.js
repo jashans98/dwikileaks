@@ -1,4 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects'
+import { delay } from 'redux-saga'
 
 import {
   SUBMIT_FILE,
@@ -12,6 +13,8 @@ import {
  */
 function* _submitDocument(documents) {
   try {
+    // TODO" REMOVE ARTIFICIAL DELAY
+    yield delay(5000)
     yield put({ type: SUBMIT_FILE__SUCCESS })
   } catch (err) {
     // Dispatch arbitrary on-error action

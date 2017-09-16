@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react'
 import Dropzone from 'react-dropzone'
 import styled from 'styled-components'
 
+import Spinner from '../spinner/Spinner'
+
 const Wrapper = styled.div`
   display: flex;
   position: absolute;
@@ -22,16 +24,30 @@ const StyledSubmitText = styled.p`
   box-sizing: border-box;
 `
 
-const Submit = (props) =>
-  <Wrapper className="submit">
-    <Dropzone
-      onDrop={props.submitDocument}
-    >
-      <StyledSubmitText>
-        Click here, or drag file to upload.
-      </StyledSubmitText>
-    </Dropzone>
-  </Wrapper>
+  // Return success or fail state
+const checkFail = status => status.success ?
+  <div>success!</div> :
+  <div>fail!</div>
+
+  const Submit = (props) => {
+    const { submitStatus } = props
+
+    if (!submitStatus.pending &&
+      (submitStatus.fail ||
+      submitStatus.success)) return checkFail(submitStatus)
+
+    return <Wrapper className="submit">
+      {!props.submitStatus.pending ?
+          <Dropzone
+            onDrop={props.submitDocument}
+          >
+            <StyledSubmitText>
+              Click here, or drag file to upload.
+            </StyledSubmitText>
+          </Dropzone> :
+          <Spinner />}
+        </Wrapper>
+  }
 
 Submit.propTypes = {
   submitStatus: PropTypes.object.isRequired,
