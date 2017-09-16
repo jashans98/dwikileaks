@@ -6,7 +6,7 @@ import { createStructuredSelector } from 'reselect'
 import { selectSubmitStatus } from './SubmitSelectors'
 
 // ACTIONS
-import { submitDocument } from './actions'
+import { submitDocument } from './SubmitActions'
 
 class SubmitContainer extends Component {
   render() {
