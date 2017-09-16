@@ -4,8 +4,11 @@ import { createStructuredSelector } from 'reselect'
 
 import Web3 from 'web3'
 
+import ErrorMessage from '../error/Error'
+
 // SELECTORS
 import { selectSubmitStatus } from './SubmitSelectors'
+import { selectWeb3Status } from '../util/web3/web3Selectors'
 
 // ACTIONS
 import { submitDocument } from './SubmitActions'
@@ -14,32 +17,43 @@ import { web3Initialized, web3NoExist } from '../util/web3/web3Actions'
 import Submit from './Submit'
 
 class SubmitContainer extends Component {
+  checkWeb3 = () => {
+    const { web3Initialized, web3NoExist } = this.props
+
+    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+    if (typeof window.web3 !== 'undefined') {
+      // Set to window object for now
+      window.w = new Web3(window.web3.currentProvider)
+
+      console.log('Injected web3 detected.')
+      web3Initialized()
+    } else {
+      console.log('web3 provider not found')
+      // no metamask? flag for now
+      web3NoExist()
+    }
+  }
+
   componentDidMount() {
     // Wait for loading completion to avoid race conditions with web3 injection timing.
-
-    // as per
-    window.addEventListener('load', () => {
-      const { web3Initialized, web3NoExist } = this.props
-
-      // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-      if (typeof window.web3 !== 'undefined') {
-        // Set to window object for now
-        window.w = new Web3(window.web3.currentProvider)
-
-        console.log('Injected web3 detected.')
-        web3Initialized()
-      } else {
-        console.log('web3 provider not found')
-        // no metamask? flag for now
-        web3NoExist()
-      }
-      })
-    }
+    window.addEventListener('load', this.checkWeb3)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('load', this.checkWeb3)
+  }
 
   render() {
+    const { web3Status } = this.props
+
     return (
       <div className="SubmitContainer">
-        <Submit {...this.props} />
+        {web3Status ?
+            <Submit {...this.props} /> :
+            <ErrorMessage
+              text="Woops. We couldn't find Metamask."
+              subtext="Please ensure it's on."
+            />
+        }
       </div>
     )
   }
@@ -47,6 +61,8 @@ class SubmitContainer extends Component {
 
 SubmitContainer.propTypes = {
   submitStatus: PropTypes.object.isRequired,
+  web3Status: PropTypes.bool.isRequired,
+
   submitDocument: PropTypes.func.isRequired,
 
   web3Initialized: PropTypes.func.isRequired,
@@ -55,6 +71,7 @@ SubmitContainer.propTypes = {
 
 export default connect(createStructuredSelector({
   submitStatus: selectSubmitStatus,
+  web3Status: selectWeb3Status,
 }), {
   submitDocument,
   web3Initialized,
