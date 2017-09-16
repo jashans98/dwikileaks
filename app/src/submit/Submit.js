@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import Spinner from '../components/spinner/Spinner'
 import Infobox from '../components/infobox/Infobox'
+import Instructions from './Instructions'
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,6 +13,16 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+`
+
+const StyledDropzone = styled(Dropzone)`
+  text-align: center;
+  margin: 0 auto;
+  padding: 20px;
+  height: 100px;
+  width: 100px;
+  color: red;
+  border-style: dashed;
 `
 
 const StyledSubmitText = styled.p`
@@ -24,6 +35,18 @@ const StyledSubmitText = styled.p`
   padding: 10px;
   box-sizing: border-box;
 `
+
+const getUpload = (submit) =>
+  <div>
+    <Instructions />
+    <StyledDropzone
+      onDrop={submit}
+    >
+      <StyledSubmitText>
+        Drag file here
+      </StyledSubmitText>
+    </StyledDropzone>
+  </div>
 
   // Return success or fail state
 const checkFail = status => status.success ?
@@ -39,13 +62,7 @@ const checkFail = status => status.success ?
 
     return <Wrapper className="submit">
       {!props.submitStatus.pending ?
-          <Dropzone
-            onDrop={props.submitDocument}
-          >
-            <StyledSubmitText>
-              Click here, or drag file to upload.
-            </StyledSubmitText>
-          </Dropzone> :
+          getUpload(props.submitDocument) :
           <Spinner />}
         </Wrapper>
   }
