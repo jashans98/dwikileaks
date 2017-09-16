@@ -1,16 +1,28 @@
-const initialState = {
-  web3Instance: null
-}
+import { fromJS } from 'immutable'
+import {
+  WEB3_INITIALIZED,
+  WEB3_NOEXIST,
+} from './web3Constants'
+
+const initialState = fromJS({
+  web3Instance: null,
+  existenceChecked: false,
+})
 
 const web3Reducer = (state = initialState, action) => {
-  if (action.type === 'WEB3_INITIALIZED')
-  {
-    return Object.assign({}, state, {
-      web3Instance: action.payload.web3Instance
-    })
-  }
+  switch(action.type) {
+    case WEB3_INITIALIZED:
+      return state
+        .set('web3Instance', action.payload)
+        .set('existenceChecked', true)
 
-  return state
+    case WEB3_NOEXIST:
+      return state
+        .set('web3Instance', null)
+        .set('existenceChecked', true)
+
+    default: return state
+  }
 }
 
 export default web3Reducer
