@@ -1,0 +1,2 @@
+export const WEB3_INITIALIZED = 'web3/WEB3_INITIALIZED'
+export const WEB3_NOEXIST = 'web3/WEB3_NOEXIST'
