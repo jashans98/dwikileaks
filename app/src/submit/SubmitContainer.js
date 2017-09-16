@@ -35,11 +35,11 @@ class SubmitContainer extends Component {
     }
   }
 
-  componentWillMount() {
-    if (!this.props.web3Status.checked) this.checkWeb3()
-  }
-
   componentDidMount() {
+    // Check incase we're coming from a different route
+    // => effectively push to redux
+    if (window.web3) this.checkWeb3()
+
     // Wait for loading completion to avoid race conditions with web3 injection timing.
     window.addEventListener('load', this.checkWeb3)
   }
