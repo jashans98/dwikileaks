@@ -5,7 +5,7 @@ import {
 } from './web3Constants'
 
 const initialState = fromJS({
-  web3Instance: null,
+  web3Instance: false,
   existenceChecked: false,
 })
 
@@ -18,7 +18,7 @@ const web3Reducer = (state = initialState, action) => {
 
     case WEB3_NOEXIST:
       return state
-        .set('web3Instance', null)
+        .set('web3Instance', false)
         .set('existenceChecked', true)
 
     default: return state

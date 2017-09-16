@@ -45,9 +45,11 @@ class SubmitContainer extends Component {
   render() {
     const { web3Status } = this.props
 
+    if (!web3Status.checked) return <div>loading</div>
+
     return (
       <div className="SubmitContainer">
-        {web3Status ?
+        {web3Status.exists ?
             <Submit {...this.props} /> :
             <ErrorMessage
               text="Woops. We couldn't find Metamask."
@@ -61,7 +63,7 @@ class SubmitContainer extends Component {
 
 SubmitContainer.propTypes = {
   submitStatus: PropTypes.object.isRequired,
-  web3Status: PropTypes.bool.isRequired,
+  web3Status: PropTypes.object.isRequired,
 
   submitDocument: PropTypes.func.isRequired,
 
