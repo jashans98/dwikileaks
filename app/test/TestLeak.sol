@@ -9,13 +9,20 @@ contract TestLeak {
   // Load the leak contract here
   Leak leak = Leak(DeployedAddresses.Leak());
 
-  string fake_hash = "0xhelloworld";
+  bytes32 fake_hash = "12345678910112";
 
   function testSubmitHash() {
     Assert.equal(true, leak.addSubmittal(fake_hash), "add submittal did not return true");
   }
 
   function testReceiveHash() {
-    Assert.equal(fake_hash, leak.submittals(1), "did not receive proper hash");
+    bytes32 received_hash = leak.fetchHash(0);
+    Assert.equal(fake_hash, received_hash, "hashes do not match");
+  }
+
+  function testReceiveSubmittal() {
+    bytes32[20] memory hashes;
+    hashes = leak.fetchRecentSubmittals();
+    Assert.equal(hashes[0], fake_hash, "hashes should match");
   }
 }
