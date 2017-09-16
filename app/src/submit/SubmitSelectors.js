@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 
-const selectSubmit = (state) => state.get('submit')
+const selectSubmit = (state) => state['submit']
 
 const selectSubmitStatus = createSelector(
   selectSubmit,
