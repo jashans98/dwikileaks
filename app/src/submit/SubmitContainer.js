@@ -4,8 +4,8 @@ import { createStructuredSelector } from 'reselect'
 
 import Web3 from 'web3'
 
-import ErrorMessage from '../error/Error'
-import Spinner from '../spinner/Spinner'
+import Infobox from '../components/infobox/Infobox'
+import Spinner from '../components/spinner/Spinner'
 
 // SELECTORS
 import { selectSubmitStatus } from './SubmitSelectors'
@@ -35,6 +35,10 @@ class SubmitContainer extends Component {
     }
   }
 
+  componentWillMount() {
+    if (!this.props.web3Status.checked) this.checkWeb3()
+  }
+
   componentDidMount() {
     // Wait for loading completion to avoid race conditions with web3 injection timing.
     window.addEventListener('load', this.checkWeb3)
@@ -52,7 +56,7 @@ class SubmitContainer extends Component {
       <div className="SubmitContainer">
         {web3Status.exists ?
             <Submit {...this.props} /> :
-            <ErrorMessage
+            <Infobox
               text="Woops. We couldn't find Metamask."
               subtext="Please ensure it's on."
             />

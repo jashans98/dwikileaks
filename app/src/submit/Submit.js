@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react'
 import Dropzone from 'react-dropzone'
 import styled from 'styled-components'
 
-import Spinner from '../spinner/Spinner'
-import ErrorMessage from '../error/Error'
+import Spinner from '../components/spinner/Spinner'
+import Infobox from '../components/infobox/Infobox'
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,8 +27,8 @@ const StyledSubmitText = styled.p`
 
   // Return success or fail state
 const checkFail = status => status.success ?
-  <ErrorMessage text="Success!" /> :
-  <ErrorMessage error text="Woops. There was an error uploading" />
+  <Infobox text="Success!" /> :
+  <Infobox error text="Woops. There was an error uploading" />
 
   const Submit = (props) => {
     const { submitStatus } = props
