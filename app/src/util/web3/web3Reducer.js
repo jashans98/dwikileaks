@@ -13,7 +13,7 @@ const web3Reducer = (state = initialState, action) => {
   switch(action.type) {
     case WEB3_INITIALIZED:
       return state
-        .set('web3Instance', action.payload)
+        .set('web3Instance', true)
         .set('existenceChecked', true)
 
     case WEB3_NOEXIST:
