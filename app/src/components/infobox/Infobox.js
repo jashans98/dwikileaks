@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Message } from 'rebass'
 
-const ErrorMessage = (props) => {
+const Infobox = (props) => {
   const conditioning = {}
   if (props.bad) conditioning.background = 'red'
 
@@ -16,8 +16,8 @@ const ErrorMessage = (props) => {
   )
 }
 
-ErrorMessage.propTypes = {
+Infobox.propTypes = {
   text: PropTypes.string.isRequired,
 }
 
-export default ErrorMessage
+export default Infobox
