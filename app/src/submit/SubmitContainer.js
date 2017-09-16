@@ -11,6 +11,8 @@ import { selectSubmitStatus } from './SubmitSelectors'
 import { submitDocument } from './SubmitActions'
 import { web3Initialized, web3NoExist } from '../util/web3/web3Actions'
 
+import Submit from './Submit'
+
 class SubmitContainer extends Component {
   componentDidMount() {
     // Wait for loading completion to avoid race conditions with web3 injection timing.
@@ -35,11 +37,9 @@ class SubmitContainer extends Component {
     }
 
   render() {
-    const { submitDocument } = this.props
-
     return (
       <div className="SubmitContainer">
-        <button onClick={submitDocument}>submit</button>
+        <Submit {...this.props} />
       </div>
     )
   }

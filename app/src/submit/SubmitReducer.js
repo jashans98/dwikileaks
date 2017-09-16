@@ -9,6 +9,7 @@ const initialState = fromJS({
   submitPending: false,
   submitFail: false,
   submitSuccess: false,
+  submitData: null,
 })
 
 export default function submit(state = initialState, action) {
@@ -22,6 +23,7 @@ export default function submit(state = initialState, action) {
     case SUBMIT_FILE__SUCCESS:
       return state
         .set('submitPending', false)
+        .set('submitData', action, action.doc)
         .set('submitFail', false)
         .set('submitSuccess', true)
 

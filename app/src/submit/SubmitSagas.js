@@ -1,4 +1,3 @@
-import { delay } from 'redux-saga'
 import { put, takeLatest } from 'redux-saga/effects'
 
 import {
@@ -11,9 +10,8 @@ import {
  * Placeholder saga
  * TODO: Hook up with actual submit
  */
-function* _submitDocument(action) {
+function* _submitDocument(documents) {
   try {
-    yield delay(500) // TODO: REMOVE
     yield put({ type: SUBMIT_FILE__SUCCESS })
   } catch (err) {
     // Dispatch arbitrary on-error action
