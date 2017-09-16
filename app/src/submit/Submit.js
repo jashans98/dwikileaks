@@ -3,6 +3,7 @@ import Dropzone from 'react-dropzone'
 import styled from 'styled-components'
 
 import Spinner from '../spinner/Spinner'
+import ErrorMessage from '../error/Error'
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,8 +27,8 @@ const StyledSubmitText = styled.p`
 
   // Return success or fail state
 const checkFail = status => status.success ?
-  <div>success!</div> :
-  <div>fail!</div>
+  <ErrorMessage text="Success!" /> :
+  <ErrorMessage error text="Woops. There was an error uploading" />
 
   const Submit = (props) => {
     const { submitStatus } = props
