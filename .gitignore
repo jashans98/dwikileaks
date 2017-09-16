@@ -31,6 +31,7 @@ bower_components
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+app/build/*
 
 # Dependency directories
 node_modules/
@@ -110,3 +111,6 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+
+# misc
+.DS_Store
