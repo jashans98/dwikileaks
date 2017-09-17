@@ -63,6 +63,7 @@ LeakApp = {
     web3.eth.getAccounts(function(error, accounts) {
       if (error) {
         console.log(error);
+        return;
       }
 
       var account = accounts[0];
@@ -70,9 +71,17 @@ LeakApp = {
       LeakApp.contracts.Leak.deployed().then(function(instance) {
         leakInstance = instance;
         web3.eth.getTransactionCount(account, function(res) { console.log(res); });
-        return leakInstance.addSubmittal(ipfsHash, LeakApp.admin, {from: account, value: web3.toWei(0.5, "ether")})
+        return leakInstance.addSubmittal(ipfsHash, LeakApp.admin, {from: account, value: web3.toWei(0.5, "ether")});
       }).then(function(result) {
-        console.log(result);
+        
+        for (var i = 0; i < result.logs.length; ++i) {
+          var log = result.logs[i];
+
+          if (log.event == 'Delivered') {
+            // success! :)
+            // update the DOM telling the user we're done
+          }
+        }
       });
     })
   },
@@ -99,6 +108,6 @@ LeakApp = {
 
 $(function() {
   $(window).load(function() {
-    // App.init();
+    LeakApp.init();
   });
 });
