@@ -1,5 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects'
-import { delay } from 'redux-saga'
+import { put, takeLatest, call } from 'redux-saga/effects'
 
 import {
   SUBMIT_FILE,
@@ -21,12 +20,14 @@ function* _submitDocument(documents) {
     const file = documents.payload[0]
     const reader = new FileReader()
 
-    yield reader.onload = event => {
-      const data = reader.result;
-      sendFileToIPFS(data)
+    yield call(function() {
+      reader.onload = () => {
+        const data = reader.result;
+        sendFileToIPFS(data)
+      }
+    })
 
-      return put({ type: SUBMIT_FILE__SUCCESS })
-    }
+    yield put({ type: SUBMIT_FILE__SUCCESS })
 
     reader.readAsBinaryString(file)
   } catch (err) {
