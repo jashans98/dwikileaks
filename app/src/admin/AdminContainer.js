@@ -15,7 +15,7 @@ import { selectWeb3Status } from '../util/web3/web3Selectors'
 // ACTIONS
 // import { AdminDocument } from './AdminActions'
 import { web3Initialized, web3NoExist } from '../util/web3/web3Actions'
-import { getLeaks } from './AdminActions'
+import { getLeaks, downloadDocument } from './AdminActions'
 
 // import Admin from './Admin'
 
@@ -86,5 +86,6 @@ export default connect(createStructuredSelector({
   web3Initialized,
   web3NoExist,
   getLeaks,
+  downloadDocument,
 })(AdminContainer)
 

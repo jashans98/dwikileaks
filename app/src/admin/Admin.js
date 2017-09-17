@@ -5,6 +5,7 @@ const Admin = props =>
   <div>
     {props.leaks.length && props.leaks.map((leak, i) =>
       <Card
+        onClick={props.downloadDocument}
         key={i}
         px={3}
         py={4}
