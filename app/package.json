@@ -48,7 +48,10 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "cryptico": "^1.0.2",
+    "crypto-js": "^3.1.9-1",
     "immutable": "^3.8.1",
+    "ipfs-api": "^14.3.5",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-dropzone": "^4.1.2",

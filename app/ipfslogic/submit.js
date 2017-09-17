@@ -1,4 +1,4 @@
-var crypto = require("crypto-js");
+var cryptico = require("cryptico");
 var ipfsAPI = require('ipfs-api');
 
 const addFileToIPFS = (data) => {
@@ -11,19 +11,22 @@ const addFileToIPFS = (data) => {
 	)
 	//var buffer = new Buffer("I'm a string!", "utf-8")
 
-	return ipfs.files.add(data)
+	return ipfs.files.add(new Buffer(data.cipher))
 }
 
-const encryptFile = (filePath, publicKey) => {
+const encryptFile = data => {
+	const _key = cryptico.generateRSAKey('key', 1024)
+	const key = cryptico.publicKeyString(_key)
+
 	// God Bless this synchronus function.
-	var buffer = new Buffer(filePath);
-	var encryptedFile = crypto.publicEncrypt(publicKey, buffer);
+	var encryptedFile = cryptico.encrypt(data, key);
 	//console.log(typeof(encryptedFile))
 	return encryptedFile
 }
 
-const sendFileToIPFS = (filePath, publicKey) => {
-	addFileToIPFS(encryptFile(filePath, publicKey))
+const sendFileToIPFS = data => {
+	console.log(data);
+	addFileToIPFS(encryptFile(data))
 		.then(res => {
 			const hash = res[0]['hash'];
 			console.log('hash', hash);
