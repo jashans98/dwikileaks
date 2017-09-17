@@ -6,20 +6,22 @@ import Web3 from 'web3'
 
 import Infobox from '../components/infobox/Infobox'
 import Spinner from '../components/spinner/Spinner'
+import Admin from './Admin'
 
 // SELECTORS
-import { selectSubmitStatus } from './SubmitSelectors'
+import { selectGetLeakStatus, selectLeakData } from './AdminSelectors'
 import { selectWeb3Status } from '../util/web3/web3Selectors'
 
 // ACTIONS
-import { submitDocument } from './SubmitActions'
+// import { AdminDocument } from './AdminActions'
 import { web3Initialized, web3NoExist } from '../util/web3/web3Actions'
+import { getLeaks } from './AdminActions'
 
-import Submit from './Submit'
+// import Admin from './Admin'
 
-class SubmitContainer extends Component {
+class AdminContainer extends Component {
   checkWeb3 = () => {
-    const { web3Initialized, web3NoExist } = this.props
+    const { web3Initialized, web3NoExist, getLeaks } = this.props
 
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
     if (typeof window.web3 !== 'undefined') {
@@ -27,7 +29,9 @@ class SubmitContainer extends Component {
       window.w = new Web3(window.web3.currentProvider)
 
       console.log('Injected web3 detected.')
+
       web3Initialized()
+      getLeaks()
     } else {
       console.log('web3 provider not found')
       // no metamask? flag for now
@@ -53,9 +57,9 @@ class SubmitContainer extends Component {
     if (!web3Status.checked) return <Spinner />
 
     return (
-      <div className="SubmitContainer">
+      <div className="AdminContainer">
         {web3Status.exists ?
-            <Submit {...this.props} /> :
+            <Admin {...this.props} /> :
             <Infobox
               text="Woops. We couldn't find Metamask."
               subtext="Please ensure it's on."
@@ -66,22 +70,21 @@ class SubmitContainer extends Component {
   }
 }
 
-SubmitContainer.propTypes = {
-  submitStatus: PropTypes.object.isRequired,
+AdminContainer.propTypes = {
+  getLeakStatus: PropTypes.object.isRequired,
   web3Status: PropTypes.object.isRequired,
-
-  submitDocument: PropTypes.func.isRequired,
 
   web3Initialized: PropTypes.func.isRequired,
   web3NoExist: PropTypes.func.isRequired,
 }
 
 export default connect(createStructuredSelector({
-  submitStatus: selectSubmitStatus,
+  getLeakStatus: selectGetLeakStatus,
   web3Status: selectWeb3Status,
+  leaks: selectLeakData,
 }), {
-  submitDocument,
   web3Initialized,
   web3NoExist,
-})(SubmitContainer)
+  getLeaks,
+})(AdminContainer)
 

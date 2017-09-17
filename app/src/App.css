@@ -1,5 +1,9 @@
 /* PAGE */
 
+body {
+  margin-top: 50px;
+}
+
 body,
 .pure-g [class*=pure-u] {
   font-family: 'Open Sans', sans-serif;
@@ -20,6 +24,8 @@ code {
   box-sizing: border-box;
   width: 100%;
   padding: 45px 20px;
+  max-width: 750px;
+  margin: 0 auto;
 }
 
 .pure-button-primary {
@@ -37,7 +43,9 @@ code {
 /* NAVBAR */
 
 .navbar {
+  z-index: 100;
   position: fixed;
+  top: 0;
   padding: 5px;
   background: #0c1a2b;
   font-family: 'Oswald', 'Arial Narrow', sans-serif;

@@ -5,9 +5,9 @@ const selectSubmit = (state) => state['submit']
 const selectSubmitStatus = createSelector(
   selectSubmit,
   (status) => ({
-    pending: status.submitPending,
-    fail: status.submitFail,
-    success: status.submitSuccess,
+    pending: status.get('submitPending'),
+    fail: status.get('submitFail'),
+    success: status.get('submitSuccess'),
   })
 )
 
