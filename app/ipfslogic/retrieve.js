@@ -17,9 +17,6 @@ function getFileFromIPFS(hash) {
 }
 
 const retrieveFileToIPFS = (hash, callback) => {
-	//. TODO: REMOVE ME
-	hash = "QmSgJ8t2bjrXBpy532ZL4vbQAvdVHmFqKBKG2UPPN6VVNr";
-
 	getFileFromIPFS(hash)
 		.then((stream) => {
 			stream.on('data', (file) => {
