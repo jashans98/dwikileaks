@@ -3,7 +3,12 @@ import {
   GET_LEAKS,
   GET_LEAKS__SUCCESS,
   GET_LEAKS__ERROR,
+  DOWNLOAD_DOCUMENT,
 } from './AdminConstants'
+
+import {
+  retrieveFileToIPFS,
+} from '../../../app/ipfslogic/retrieve'
 
 const initialState = fromJS({
   getLeakPending: false,
@@ -33,6 +38,13 @@ export default function admin(state = initialState, action) {
         .set('getLeakPending', false)
         .set('getLeakFail', true)
         .set('getLeakSuccess', false)
+
+    case DOWNLOAD_DOCUMENT: {
+      retrieveFileToIPFS(action.hash)
+
+      return state
+    }
+
 
     default: return state
   }
