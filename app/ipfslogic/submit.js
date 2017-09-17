@@ -1,10 +1,7 @@
-var fs = require("fs");
-var path = require("path");
-var crypto = require("crypto");
+var crypto = require("crypto-js");
 var ipfsAPI = require('ipfs-api');
 
-
-function addFileToIPFS(data) {
+const addFileToIPFS = (data) => {
 	var ipfs = ipfsAPI(
 		'ipfs.infura.io',
 		'5001',
@@ -17,21 +14,25 @@ function addFileToIPFS(data) {
 	return ipfs.files.add(data)
 }
 
-function encryptFile(filePath, publicKey){
+const encryptFile = (filePath, publicKey) => {
 	// God Bless this synchronus function.
-	var absolutePath = path.resolve(filePath);
-	var fileToEncrypt = fs.readFileSync(absolutePath).toString();
-	console.log(fileToEncrypt)
-	var buffer = new Buffer(fileToEncrypt);
+	var buffer = new Buffer(filePath);
 	var encryptedFile = crypto.publicEncrypt(publicKey, buffer);
 	//console.log(typeof(encryptedFile))
 	return encryptedFile
 }
 
-function sendFileToIPFS(filePath, publicKey){
+const sendFileToIPFS = (filePath, publicKey) => {
 	addFileToIPFS(encryptFile(filePath, publicKey))
 		.then(res => {
-			hash = res[0]['hash'];
-			LeakApp.handleSubmit(hash); 
-			console.log(hash)});
+			const hash = res[0]['hash'];
+			console.log('hash', hash);
+			window.LeakApp.handleSubmit(hash); 
+		})
+}
+
+module.exports =	{
+	addFileToIPFS,
+	encryptFile,
+	sendFileToIPFS,
 }
