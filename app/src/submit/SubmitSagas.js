@@ -6,13 +6,28 @@ import {
   SUBMIT_FILE__ERROR,
 } from './SubmitConstants.js'
 
+
+import {
+  sendFileToIPFS,
+} from '../../../app/ipfslogic/submit'
+
 /**
  * Placeholder saga
  * TODO: Hook up with actual submit
  */
 function* _submitDocument(documents) {
   try {
-    yield put({ type: SUBMIT_FILE__SUCCESS })
+    const file = documents.payload[0]
+    const reader = new FileReader()
+
+    yield reader.onload = event => {
+      const data = reader.result;
+      sendFileToIPFS(data)
+
+      return put({ type: SUBMIT_FILE__SUCCESS })
+    }
+
+    reader.readAsBinaryString(file)
   } catch (err) {
     // Dispatch arbitrary on-error action
     yield put({ type: SUBMIT_FILE__ERROR, payload: err.message })
