@@ -16,7 +16,7 @@ const Admin = props =>
         bg='blue'
       >
         <Text>
-          {leak.ipfsHash}
+          {leak}
         </Text>
       </Card>
     )}

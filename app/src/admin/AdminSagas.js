@@ -14,32 +14,18 @@ import {
  */
 function* _getLeaks() {
   try {
-    const contract = TruffleContract(LeakContract)
-    contract.setProvider(window.w)
-
-    let results;
-
-    /**
-     * JASHAN DO YOUR MAGIC HERE
-     *
-     */
+    // This might not work. might have to mutate DOM directly
+    // hacky, hacky, hacky.
+    // window.LeakApp.fetchSubmissions(results =>
+    //   put({ type: GET_LEAKS__SUCCESS, data: results }))
 
     // Set the `results` equal to the response from smart contract
     // TODO: remove this dummy data
-    results = [
-      {
-        ipfsHash: 'QmZtmD2qt6fJot32nabSP3CUjicnypEBz7bHVDhPQt9aAy',
-        timestamp: '15th may 2016'
-      }, {
-        ipfsHash: 'QmZtmD2qt6fJot32nabSP3CUjicnypEBz7bHVDhPQt9aAy',
-        timestamp: '15th may 2016'
-      }, {
-        ipfsHash: 'QmZtmD2qt6fJot32nabSP3CUjicnypEBz7bHVDhPQt9aAy',
-        timestamp: '15th may 2016'
-      }, {
-        ipfsHash: 'QmZtmD2qt6fJot32nabSP3CUjicnypEBz7bHVDhPQt9aAy',
-        timestamp: '15th may 2016'
-      },
+    const results = [
+      'QmZtmD2qt6fJot32nabSP3CUjicnypEBz7bHVDhPQt9aAy',
+      'QmZtmD2qt6fJot32nabSP3CUjicnypEBz7bHVDhPQt9aAy',
+      'QmZtmD2qt6fJot32nabSP3CUjicnypEBz7bHVDhPQt9aAy',
+      'QmZtmD2qt6fJot32nabSP3CUjicnypEBz7bHVDhPQt9aAy',
     ]
 
     yield put({ type: GET_LEAKS__SUCCESS, data: results })
