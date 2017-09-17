@@ -87,5 +87,4 @@ export default connect(createStructuredSelector({
   web3NoExist,
   getLeaks,
   downloadDocument,
-})(AdminContainer)
-
+})(AdminContainer);

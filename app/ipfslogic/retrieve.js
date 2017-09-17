@@ -3,24 +3,27 @@ var ipfsAPI = require('ipfs-api');
 var fileDownload = require('react-file-download');
 
 
-function getFileFromIPFS(hash) {
-	var ipfs = ipfsAPI(
-		'ipfs.infura.io',
-		'5001',
-		{
-			protocol: 'https'
-		}
-	)
-	//var buffer = new Buffer("I'm a string!", "utf-8")
 
-	return ipfs.files.get(hash)
+function getFileFromIPFS(hash) {
+  var ipfs = ipfsAPI(
+      'ipfs.infura.io',
+      '5001',
+      {
+          protocol: 'https'
+      }
+  );
+  //var buffer = new Buffer("I'm a string!", "utf-8")
+  console.log(hex2a(hash));
+  return ipfs.files.get('QmTTp4WRDWVxEcCM5a3RdmmZfWFi799y146uFjXQobkEgo');
 }
+
 
 const retrieveFileToIPFS = (hash, callback) => {
 	getFileFromIPFS(hash)
 		.then((stream) => {
 			stream.on('data', (file) => {
 				const encrypted_data = file.content.read().toString()
+				console.log(encrypted_data);
 
 				// soz
 				const pkey = '-----BEGIN RSA PRIVATE KEY-----\n'+

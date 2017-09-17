@@ -95,18 +95,9 @@ LeakApp = {
       return leakInstance.fetchRecentSubmittals.call();
     }).then(function(submittals) {
       console.log('submittals: ', submittals);
-
-      var validSubmittals = [];
-
-      for (var i = 0; i < submittals.length; i++) {
-        if (submittals[i] !== '0x00000000000000000000000000000000')
-          validSubmittals.push(submittals[i]);
-      }
-
-      LeakApp.data = validSubmittals;
       // JAMES, do your magic here
       // `submittals` is an array of strings that need to be displayed
-      cb(validSubmittals)
+      cb(submittals)
     }).catch(function(err) {
       console.log(err.message);
     });
