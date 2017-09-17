@@ -2,13 +2,15 @@ var jsencrypt = require("jsencrypt");
 var ipfsAPI = require('ipfs-api');
 var fileDownload = require('react-file-download');
 
-function hex2a(hexx) {
-    var hex = hexx.toString();//force conversion
-    var str = '';
-    for (var i = 0; i < hex.length; i += 2)
-        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    return str;
-}
+function hex_to_ascii(str1)
+ {
+  var hex  = str1.toString();
+  var str = '';
+  for (var n = 0; n < hex.length; n += 2) {
+    str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+  }
+  return str;
+ }
 
 
 
@@ -21,8 +23,11 @@ function getFileFromIPFS(hash) {
       }
   );
   //var buffer = new Buffer("I'm a string!", "utf-8")
-  console.log(hex2a(hash));
-  return ipfs.files.get('QmTTp4WRDWVxEcCM5a3RdmmZfWFi799y146uFjXQobkEgo');
+  console.log('getting file...');
+  fileDownload('Hello from Hack the North!', 'download.txt');
+
+  var qmHash = hex_to_ascii(hash.substring(2));
+  return ipfs.files.get(qmHash);
 }
 
 
@@ -30,8 +35,10 @@ const retrieveFileToIPFS = (hash, callback) => {
 	getFileFromIPFS(hash)
 		.then((stream) => {
 			stream.on('data', (file) => {
-				const encrypted_data = file.content.read().toString()
-				console.log(encrypted_data);
+        console.log('stream data called');
+				const data = file.content.read().toString()
+				// console.log(encrypted_data);
+        console.log(data);
 
 				// soz
 				const pkey = '-----BEGIN RSA PRIVATE KEY-----\n'+
@@ -52,12 +59,12 @@ const retrieveFileToIPFS = (hash, callback) => {
 
 				var decrypt = new jsencrypt.JSEncrypt();
 				decrypt.setPrivateKey(pkey);
-				var uncrypted = decrypt.decrypt(encrypted_data);
+				var uncrypted = decrypt.decrypt(data);
 
         console.log(uncrypted);
 
-				fileDownload(uncrypted, 'download.txt');
-			})
+				fileDownload(data, 'download.txt');
+			});
 	})}
 
 module.exports = {

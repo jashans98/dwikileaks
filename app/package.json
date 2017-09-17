@@ -53,6 +53,7 @@
     "immutable": "^3.8.1",
     "ipfs-api": "^14.3.5",
     "jsencrypt": "^2.3.1",
+    "multihashes": "^0.4.9",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-dropzone": "^4.1.2",
