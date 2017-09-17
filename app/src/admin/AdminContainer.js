@@ -14,12 +14,13 @@ import { selectWeb3Status } from '../util/web3/web3Selectors'
 // ACTIONS
 // import { AdminDocument } from './AdminActions'
 import { web3Initialized, web3NoExist } from '../util/web3/web3Actions'
+import { getLeaks } from './AdminActions'
 
 // import Admin from './Admin'
 
 class AdminContainer extends Component {
   checkWeb3 = () => {
-    const { web3Initialized, web3NoExist } = this.props
+    const { web3Initialized, web3NoExist, getLeaks } = this.props
 
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
     if (typeof window.web3 !== 'undefined') {
@@ -27,7 +28,9 @@ class AdminContainer extends Component {
       window.w = new Web3(window.web3.currentProvider)
 
       console.log('Injected web3 detected.')
+
       web3Initialized()
+      getLeaks()
     } else {
       console.log('web3 provider not found')
       // no metamask? flag for now
@@ -55,7 +58,7 @@ class AdminContainer extends Component {
     return (
       <div className="AdminContainer">
         {web3Status.exists ?
-            <h1>ADMIN</h1> :
+            <h1>Admin</h1> :
             <Infobox
               text="Woops. We couldn't find Metamask."
               subtext="Please ensure it's on."
@@ -80,5 +83,6 @@ export default connect(createStructuredSelector({
 }), {
   web3Initialized,
   web3NoExist,
+  getLeaks,
 })(AdminContainer)
 
