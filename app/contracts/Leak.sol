@@ -5,15 +5,14 @@ contract Leak {
   address public admin;
   uint last_visited;
   
-  struct Submittal {
-    bytes32 ipfs_hash;
-    uint time_stamp;
-  }
 
-  Submittal[] submittals;
+  bytes32[] submittals;
 
   // event to give the user confirmation once file upload succeeds
   event Delivered(address from, address to, uint amount);
+
+  // fail the event if not enough ether is sent
+  event Failed(string reason);
 
   function Leak() {
     // only gets called when the contract is deployed
@@ -24,33 +23,40 @@ contract Leak {
   }
 
   function fetchHash(uint i) public returns (bytes32) {
-    return submittals[i].ipfs_hash;
+    return submittals[i];
   }
 
-  function addSubmittal(bytes32 ipfs_hash) public returns (bool) {
-    Submittal memory new_submittal = Submittal(ipfs_hash, now);
-    submittals.push(new_submittal);
+  function addSubmittal(bytes32 ipfs_hash, address toaddr) payable returns (bool) {
+
+    require(msg.value >= 50000000000000000);
+    require(toaddr.send(msg.value));
+
+
+    submittals.push(ipfs_hash);
 
     // return true just for testing
+    Delivered(msg.sender, admin, msg.value);
     return true;
   }
 
   // fetch last min(submittals.length, 20) submittals
-  function fetchRecentSubmittals() public returns (bytes32[20], uint[20]) {
-    bytes32[20] hashes;
-    uint[20] times;
+  function fetchRecentSubmittals() public returns (bytes32[20]) {
+    bytes32[20] memory hashes;
+    // uint[20] times;
 
     for (uint i = 0; i < 20; i++) {
-      if (i == submittals.length) {
+      if (i >= submittals.length) {
         hashes[i] = 0;
-        times[i] = 0;
+        // times[i] = 0;
       }
-      Submittal s = submittals[submittals.length - i -1];
-      hashes[i] = s.ipfs_hash;
-      times[i] = s.time_stamp;
+      else {
+        hashes[i] = submittals[submittals.length - i -1];
+      }
+      
+      // times[i] = s.time_stamp;
     }
 
-    return (hashes, times);
+    return hashes;
     
   }
 
