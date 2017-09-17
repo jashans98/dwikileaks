@@ -1,19 +1,9 @@
-var fs = require("fs");
-var path = require("path");
-var crypto = require("crypto");
+var cryptico = require("cryptico");
 var ipfsAPI = require('ipfs-api');
+var fileDownload = require('react-file-download');
 
-
-function decryptFile(dataToDecrypt, privateKey){
-	// God Bless this synchronus function.
-	var buffer = new Buffer(dataToDecrypt);
-	var decryptedFile = crypto.publicDecrypt(privateKey, buffer);
-	//console.log(typeof(encryptedFile))
-	return decryptedFile
-}
 
 function getFileFromIPFS(hash) {
-	var ipfsAPI = require('ipfs-api')
 	var ipfs = ipfsAPI(
 		'ipfs.infura.io',
 		'5001',
@@ -26,29 +16,24 @@ function getFileFromIPFS(hash) {
 	return ipfs.files.get(hash)
 }
 
+const retrieveFileToIPFS = (hash, callback) => {
+	//. TODO: REMOVE ME
+	hash = "Qmdoj5MojJ37HdZC3hCvHagN5KvvsLdUxmZvukLqjToLbC";
 
-function decryptFile(dataToDecrypt, privateKey){
-	// God Bless this synchronus function.
-	var buffer = new Buffer(dataToDecrypt);
-	var decryptedFile = crypto.publicDecrypt(privateKey, buffer);
-	console.log(typeof(decryptedFile))
-	return decryptedFile
-}
-
-
-function retrieveFileToIPFS(hash, privateKey){
 	getFileFromIPFS(hash)
-		.then((stream) => {  
+		.then((stream) => {
 			stream.on('data', (file) => {
-		    encrypted_data = new Buffer(file.content.read().toString());
-		    decrypted_data = crypto.publicDecrypt(privateKey, encrypted_data);
-		    console.log(decrypted_data)
-	  	})
+				const key = cryptico.generateRSAKey('key', 1024)
+
+				const encrypted_data = file.content.read().toString()
+				const decrypted_data = cryptico.decrypt(encrypted_data, key)
+
+				// TODO: decrypted_data currently is a failure obj.
+
+				fileDownload(decrypted_data, 'download.txt');
+			})
 	})}
 
-var absolutePath = path.resolve("rsakeys/rsa_1024_dwight.pem");
-var privateKeyTest = fs.readFileSync(absolutePath, "utf8");
-var hash = "Qmdoj5MojJ37HdZC3hCvHagN5KvvsLdUxmZvukLqjToLbC";
-
-console.log("Running decrypt");
-retrieveFileToIPFS(hash, privateKeyTest);
+module.exports = {
+	retrieveFileToIPFS,
+}
