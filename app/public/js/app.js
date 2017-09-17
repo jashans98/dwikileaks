@@ -77,7 +77,7 @@ LeakApp = {
     })
   },
 
-  fetchSubmissions: function() {
+  fetchSubmissions: function(cb) {
     var leakInstance;
     console.log('fetching submissions...');
     LeakApp.contracts.Leak.deployed().then(function(instance) {
@@ -88,6 +88,7 @@ LeakApp = {
       console.log('submittals: ', submittals);
       // JAMES, do your magic here
       // `submittals` is an array of strings that need to be displayed
+      cb(submittals)
     }).catch(function(err) {
       console.log(err.message);
     });
