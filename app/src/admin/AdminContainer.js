@@ -55,7 +55,6 @@ class AdminContainer extends Component {
     const { web3Status } = this.props
 
     if (!web3Status.checked) return <Spinner />
-    console.log(this.props);
 
     return (
       <div className="AdminContainer">

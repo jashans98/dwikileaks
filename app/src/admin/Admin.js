@@ -3,8 +3,9 @@ import { Card, Text } from 'rebass'
 
 const Admin = props =>
   <div>
-    {props.leaks.length && props.leaks.map(leak =>
+    {props.leaks.length && props.leaks.map((leak, i) =>
       <Card
+        key={i}
         px={3}
         py={4}
         mt={2}
