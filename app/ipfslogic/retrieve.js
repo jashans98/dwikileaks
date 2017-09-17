@@ -24,7 +24,6 @@ function getFileFromIPFS(hash) {
   );
   //var buffer = new Buffer("I'm a string!", "utf-8")
   console.log('getting file...');
-  fileDownload('Hello from Hack the North!', 'download.txt');
 
   var qmHash = hex_to_ascii(hash.substring(2));
   return ipfs.files.get(qmHash);
@@ -38,7 +37,6 @@ const retrieveFileToIPFS = (hash, callback) => {
         console.log('stream data called');
 				const data = file.content.read().toString()
 				// console.log(encrypted_data);
-        console.log(data);
 
 				// soz
 				const pkey = '-----BEGIN RSA PRIVATE KEY-----\n'+
@@ -63,7 +61,7 @@ const retrieveFileToIPFS = (hash, callback) => {
 
         console.log(uncrypted);
 
-				fileDownload(data, 'download.txt');
+				fileDownload(uncrypted, 'download.txt');
 			});
 	})}
 
