@@ -70,8 +70,10 @@ LeakApp = {
 
       LeakApp.contracts.Leak.deployed().then(function(instance) {
         leakInstance = instance;
-        web3.eth.getTransactionCount(account, function(res) { console.log(res); });
-        return leakInstance.addSubmittal(ipfsHash, LeakApp.admin, {from: account, value: web3.toWei(0.5, "ether")});
+        web3.eth.getTransactionCount(account, function(err, res) { 
+          console.log(res); 
+          return leakInstance.addSubmittal(ipfsHash, LeakApp.admin, {from: account, value: web3.toWei(0.5, "ether")});
+        });
       }).then(function(result) {
         
         for (var i = 0; i < result.logs.length; ++i) {
@@ -92,24 +94,18 @@ LeakApp = {
     LeakApp.contracts.Leak.deployed().then(function(instance) {
       leakInstance = instance;
       console.log('deployed contract');
-      return leakInstance.fetchRecentSubmittals.call();
-    }).then(function(submittals) {
-      console.log('submittals: ', submittals);
+      LeakApp.data = [];
 
-      var validSubmittals = [];
+      for (var i = 0; i < 20; i++) {
+        leakInstance.fetchHash.call(i).then(function(hash) {
+          if (hash !== '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+            LeakApp.data.push(hash);
 
-      for (var i = 0; i < submittals.length; i++) {
-        if (submittals[i] !== '0x00000000000000000000000000000000')
-          validSubmittals.push(submittals[i]);
+          if (i === 19) cb(LeakApp.data)
+        });
       }
-
-      LeakApp.data = validSubmittals;
-      // JAMES, do your magic here
-      // `submittals` is an array of strings that need to be displayed
-      cb(validSubmittals)
-    }).catch(function(err) {
-      console.log(err.message);
-    });
+      
+    })
   }
 };
 

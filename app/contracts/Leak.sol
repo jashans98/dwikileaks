@@ -6,13 +6,10 @@ contract Leak {
   uint last_visited;
   
 
-  bytes32[] submittals;
+  bytes[] submittals;
 
   // event to give the user confirmation once file upload succeeds
   event Delivered(address from, address to, uint amount);
-
-  // fail the event if not enough ether is sent
-  event Failed(string reason);
 
   function Leak() {
     // only gets called when the contract is deployed
@@ -22,11 +19,14 @@ contract Leak {
     admin = msg.sender;
   }
 
-  function fetchHash(uint i) public returns (bytes32) {
-    return submittals[i];
+  function fetchHash(uint i) public returns (bytes) {
+    if (i >= submittals.length)
+      return new bytes(46);
+    else
+      return submittals[i];
   }
 
-  function addSubmittal(bytes32 ipfs_hash, address toaddr) payable returns (bool) {
+  function addSubmittal(bytes ipfs_hash, address toaddr) payable returns (bool) {
 
     require(msg.value >= 50000000000000000);
     require(toaddr.send(msg.value));
@@ -39,26 +39,26 @@ contract Leak {
     return true;
   }
 
-  // fetch last min(submittals.length, 20) submittals
-  function fetchRecentSubmittals() public returns (bytes32[20]) {
-    bytes32[20] memory hashes;
-    // uint[20] times;
+  // // fetch last min(submittals.length, 20) submittals
+  // function fetchRecentSubmittals() public returns (string[20]) {
+  //   string[20] memory hashes;
+  //   // uint[20] times;
 
-    for (uint i = 0; i < 20; i++) {
-      if (i >= submittals.length) {
-        hashes[i] = 0;
-        // times[i] = 0;
-      }
-      else {
-        hashes[i] = submittals[submittals.length - i -1];
-      }
+  //   for (uint i = 0; i < 20; i++) {
+  //     if (i >= submittals.length) {
+  //       hashes[i] = 0;
+  //       // times[i] = 0;
+  //     }
+  //     else {
+  //       hashes[i] = submittals[submittals.length - i - 1];
+  //     }
       
-      // times[i] = s.time_stamp;
-    }
+  //     // times[i] = s.time_stamp;
+  //   }
 
-    return hashes;
+  //   return hashes;
     
-  }
+  // }
 
 
 }

@@ -2,6 +2,14 @@ var jsencrypt = require("jsencrypt");
 var ipfsAPI = require('ipfs-api');
 var fileDownload = require('react-file-download');
 
+function hex2a(hexx) {
+    var hex = hexx.toString();//force conversion
+    var str = '';
+    for (var i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
+}
+
 
 
 function getFileFromIPFS(hash) {
@@ -40,11 +48,13 @@ const retrieveFileToIPFS = (hash, callback) => {
 					'aTgjFnqE/lQ22Rk0eGaYO80cc643BXVGafNfd9fcvwBMnk0iGX0XRsOozVt5Azil\n'+
 					'psLBYuApa66NcVHJpCECQQDTjI2AQhFc1yRnCU/YgDnSpJVm1nASoRUnU8Jfm3Oz\n'+
 					'uku7JUXcVpt08DFSceCEX9unCuMcT72rAQlLpdZir876\n'+
-					'-----END RSA PRIVATE KEY-----'
+					'-----END RSA PRIVATE KEY-----';
 
-				var decrypt = new jsencrypt.JSEncrypt()
-				decrypt.setPrivateKey(pkey)
-				var uncrypted = decrypt.decrypt(encrypted_data)
+				var decrypt = new jsencrypt.JSEncrypt();
+				decrypt.setPrivateKey(pkey);
+				var uncrypted = decrypt.decrypt(encrypted_data);
+
+        console.log(uncrypted);
 
 				fileDownload(uncrypted, 'download.txt');
 			})
