@@ -6,9 +6,10 @@ import Web3 from 'web3'
 
 import Infobox from '../components/infobox/Infobox'
 import Spinner from '../components/spinner/Spinner'
+import Admin from './Admin'
 
 // SELECTORS
-import { selectGetLeakStatus } from './AdminSelectors'
+import { selectGetLeakStatus, selectLeakData } from './AdminSelectors'
 import { selectWeb3Status } from '../util/web3/web3Selectors'
 
 // ACTIONS
@@ -54,11 +55,12 @@ class AdminContainer extends Component {
     const { web3Status } = this.props
 
     if (!web3Status.checked) return <Spinner />
+    console.log(this.props);
 
     return (
       <div className="AdminContainer">
         {web3Status.exists ?
-            <h1>Admin</h1> :
+            <Admin {...this.props} /> :
             <Infobox
               text="Woops. We couldn't find Metamask."
               subtext="Please ensure it's on."
@@ -80,6 +82,7 @@ AdminContainer.propTypes = {
 export default connect(createStructuredSelector({
   getLeakStatus: selectGetLeakStatus,
   web3Status: selectWeb3Status,
+  leaks: selectLeakData,
 }), {
   web3Initialized,
   web3NoExist,

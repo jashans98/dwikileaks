@@ -9,7 +9,7 @@ const initialState = fromJS({
   getLeakPending: false,
   getLeakFail: false,
   getLeakSuccess: false,
-  data: null,
+  data: [],
 })
 
 export default function admin(state = initialState, action) {
@@ -24,7 +24,7 @@ export default function admin(state = initialState, action) {
       return state
         .set('getLeakPending', false)
         // TODO: add real property, rather than .data
-        .set('data', action, action.data)
+        .set('data', action.data)
         .set('getLeakFail', false)
         .set('getLeakSuccess', true)
 
