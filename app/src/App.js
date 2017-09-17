@@ -17,7 +17,9 @@ class App extends Component {
           <ul className="pure-menu-list navbar-right">
             <li className="pure-menu-item">
               <Link to="/submit" className="pure-menu-link">Submit</Link>
-              <Link to="/submit" className="pure-menu-link">Admin</Link>
+            </li>
+            <li className="pure-menu-item">
+              <Link to="/admin" className="pure-menu-link">Admin</Link>
             </li>
           </ul>
         </nav>
