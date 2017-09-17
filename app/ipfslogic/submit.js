@@ -1,4 +1,4 @@
-var cryptico = require("cryptico");
+var jsencrypt = require("jsencrypt");
 var ipfsAPI = require('ipfs-api');
 
 const addFileToIPFS = (data) => {
@@ -11,21 +11,24 @@ const addFileToIPFS = (data) => {
 	)
 	//var buffer = new Buffer("I'm a string!", "utf-8")
 
-	return ipfs.files.add(new Buffer(data.cipher))
+	return ipfs.files.add(new Buffer(data))
 }
 
 const encryptFile = data => {
-	const _key = cryptico.generateRSAKey('key', 1024)
-	const key = cryptico.publicKeyString(_key)
+	const key = '-----BEGIN PUBLIC KEY-----\n'+
+		'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDlOJu6TyygqxfWT7eLtGDwajtN\n'+
+		'FOb9I5XRb6khyfD1Yt3YiCgQWMNW649887VGJiGr/L5i2osbl8C9+WJTeucF+S76\n'+
+		'xFxdU6jE0NQ+Z+zEdhUTooNRaY5nZiu5PgDB0ED/ZKBUSLKL7eibMxZtMlUDHjm4\n'+
+		'gwQco1KRMDSmXSMkDwIDAQAB\n'+
+		'-----END PUBLIC KEY-----'
 
-	// God Bless this synchronus function.
-	var encryptedFile = cryptico.encrypt(data, key);
-	//console.log(typeof(encryptedFile))
-	return encryptedFile
+	var encrypt = new jsencrypt.JSEncrypt()
+	encrypt.setPublicKey(key)
+
+	return encrypt.encrypt(data)
 }
 
 const sendFileToIPFS = data => {
-	console.log(data);
 	addFileToIPFS(encryptFile(data))
 		.then(res => {
 			const hash = res[0]['hash'];
